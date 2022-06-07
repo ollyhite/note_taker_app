@@ -47,6 +47,9 @@ li {
     background-color: white;
     padding: 20px;
     margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .list-item-title {
@@ -75,11 +78,11 @@ li {
 textarea {
     border: none;
     width: 95%;
-    /* text-decoration: underline; */
+    height: 55vh;
 }
 
 .color-select {
-    width: 200px;
+    width: 250px;
 }
 
 .circle {
@@ -94,15 +97,19 @@ textarea {
 }
 
 .pink {
-    background-color: #D99B9D;
+    background-color: #E79CA3;
 }
 
 .yellow {
-    background-color: #F6CD45;
+    background-color: #FDF698;
 }
 
 .green {
-    background-color: #5ECA8C;
+    background-color: #84D4CB;
+}
+
+.brown {
+    background-color: #D7C1A5;
 }
 
 .white {

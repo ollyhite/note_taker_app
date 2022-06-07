@@ -30,13 +30,31 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-    console.info("update data in server",req.body);
+    console.info("add new data in server",req.body);
     const newdata = [...dbData, req.body];
     fs.writeFile(`./db/db.json`, JSON.stringify(newdata), (err) =>
         err
             ? console.error(err)
             : console.log(
-                `db data has been written to JSON file`
+                `new data has been added`
+            )
+    );
+});
+
+app.put('/api/notes/:id', (req, res) => {
+    console.info("updated data in server",req.body);
+    console.log("req.params.id",req.params.id);
+    const newdbData = dbData.map(item =>
+        item.id === req.params.id
+            ? { ...item, title: req.body.title , text:req.body.text, color:req.body.color }
+            : item
+        );
+    console.log(newdbData);
+    fs.writeFile(`./db/db.json`, JSON.stringify(newdbData), (err) =>
+        err
+            ? console.error(err)
+            : console.log(
+                `data has been updated`
             )
     );
 });
@@ -51,7 +69,7 @@ app.delete('/api/notes/:id', (req, res) => {
         err
             ? console.error(err)
             : console.log(
-                `db data has been written to JSON file`
+                `data has been detele`
             )
     );
 });

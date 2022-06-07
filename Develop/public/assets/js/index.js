@@ -1,11 +1,13 @@
 // const { nanoid } = require("nanoid");
 // const moment = require('moment');
+
 //note change bg js
 const note = document.querySelector('.right');
 const grayBtn = document.querySelector('.circle.gray');
 const pinkBtn = document.querySelector('.pink');
 const yellowBtn = document.querySelector('.yellow');
 const greenBtn = document.querySelector('.green');
+const brownBtn = document.querySelector('.brown');
 const whiteBtn = document.querySelector('.white');
 const inputEl = document.querySelector(".form-control")
 const textareaEl = document.querySelector("textarea");
@@ -29,23 +31,23 @@ const changeGray =()=>{
 
 
 const changeYellow =()=>{
-    note.style.backgroundColor = "#F6CD45";
-    inputEl.style.backgroundColor = "#F6CD45";
-    inputEl.classList.add('placeholder-white');
-    inputEl.style.color = "white";
-    textareaEl.style.backgroundColor = "#F6CD45";
-    textareaEl.classList.add('placeholder-white');
-    textareaEl.style.color = "white";
+    note.style.backgroundColor = "#FDF698";
+    inputEl.style.backgroundColor = "#FDF698";
+    inputEl.classList.remove('placeholder-white');
+    inputEl.style.color = "black";
+    textareaEl.style.backgroundColor = "#FDF698";
+    textareaEl.classList.remove('placeholder-white');
+    textareaEl.style.color = "black";
     borderCancel();
     yellowBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
 
 const changePink =()=>{
-    note.style.backgroundColor = "#D99B9D";
-    inputEl.style.backgroundColor = "#D99B9D";
+    note.style.backgroundColor = "#E79CA3";
+    inputEl.style.backgroundColor = "#E79CA3";
     inputEl.classList.add('placeholder-white');
     inputEl.style.color = "white";
-    textareaEl.style.backgroundColor = "#D99B9D";
+    textareaEl.style.backgroundColor = "#E79CA3";
     textareaEl.classList.add('placeholder-white');
     textareaEl.style.color = "white";
     borderCancel();
@@ -53,15 +55,27 @@ const changePink =()=>{
 }
 
 const changeGreen =()=>{
-    note.style.backgroundColor = "#5ECA8C";
-    inputEl.style.backgroundColor = "#5ECA8C";
+    note.style.backgroundColor = "#84D4CB";
+    inputEl.style.backgroundColor = "#84D4CB";
     inputEl.classList.add('placeholder-white');
     inputEl.style.color = "white";
-    textareaEl.style.backgroundColor = "#5ECA8C";
+    textareaEl.style.backgroundColor = "#84D4CB";
     textareaEl.classList.add('placeholder-white');
     textareaEl.style.color = "white";
     borderCancel();
     greenBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+}
+
+const changeBrown =()=>{
+    note.style.backgroundColor = "#D7C1A5";
+    inputEl.style.backgroundColor = "#D7C1A5";
+    inputEl.classList.add('placeholder-white');
+    inputEl.style.color = "white";
+    textareaEl.style.backgroundColor = "#D7C1A5";
+    textareaEl.classList.add('placeholder-white');
+    textareaEl.style.color = "white";
+    borderCancel();
+    brownBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
 
 const changeWhite =()=>{
@@ -79,14 +93,8 @@ grayBtn.addEventListener('click', changeGray);
 pinkBtn.addEventListener('click', changePink);
 yellowBtn.addEventListener('click', changeYellow);
 greenBtn.addEventListener('click', changeGreen);
+brownBtn.addEventListener('click', changeBrown);
 whiteBtn.addEventListener('click', changeWhite);
-
-// const submitData = () =>{
-//     // console.log(inputEl.value);
-//     // console.log(textareaEl.value);
-//     const data = {title:inputEl.value, text:textareaEl.value}
-//     console.log(data);
-// }
 
 //api
 
@@ -133,6 +141,15 @@ const saveNote = (note) =>
         body: JSON.stringify(note),
     });
 
+const updateNote = (id,note) =>
+    fetch(`/api/notes/${id}`, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(note),
+    });
+
 const deleteNote = (id) =>
     fetch(`/api/notes/${id}`, {
         method: 'DELETE',
@@ -145,35 +162,53 @@ const renderActiveNote = () => {
     // hide(saveNoteBtn);
 
     if (activeNote.id) {
-        noteTitle.setAttribute('readonly', true);
-        noteText.setAttribute('readonly', true);
+        // noteTitle.setAttribute('readonly', true);
+        // noteText.setAttribute('readonly', true);
         noteTitle.value = activeNote.title;
         noteText.value = activeNote.text;
+        note.style.backgroundColor = activeNote.color;
+        inputEl.style.backgroundColor = activeNote.color;
+        textareaEl.style.backgroundColor = activeNote.color;
     } else {
-        noteTitle.removeAttribute('readonly');
-        noteText.removeAttribute('readonly');
+        // noteTitle.removeAttribute('readonly');
+        // noteText.removeAttribute('readonly');
         noteTitle.value = '';
         noteText.value = '';
     }
 };
 
-const handleNoteSave = () => {
+const handleNoteSave = (e) => {
+    e.preventDefault();
+    console.log(e.target.innerText);
     // const CurrentDate = moment().format('YYYY/MM/DD');
-    console.log("handleNoteSave");
-    const newNote = {
-        title: noteTitle.value,
-        text: noteText.value,
-        id: Math.random().toString(16).slice(2),
-        color: note.style.backgroundColor
-        // id: nanoid(),
-        // date:CurrentDate
-    };
-    console.log("newNote",newNote);
-    saveNote(newNote).then(() => {
-        console.log("after save redender");
-        getAndRenderNotes();
-        renderActiveNote();
-    });
+    if(e.target.innerText==="Save"){
+        console.log("handleNoteSave");
+        console.log(activeNote);
+        const updateData = {title: noteTitle.value,text: noteText.value,color: note.style.backgroundColor}
+        console.log(updateData);
+        updateNote(activeNote.id,updateData).then(() => {
+            console.log("after update redender");
+            getAndRenderNotes();
+            renderActiveNote();
+        });
+    }else{
+        console.log("handleNoteSave add new one");
+        const newNote = {
+            title: noteTitle.value,
+            text: noteText.value,
+            id: Math.random().toString(16).slice(2),
+            color: note.style.backgroundColor
+            // id: nanoid(),
+            // date:CurrentDate
+        };
+        console.log("newNote",newNote);
+        saveNote(newNote).then(() => {
+            console.log("after save redender");
+            getAndRenderNotes();
+            renderActiveNote();
+        });
+    }
+    
 };
 
 // Delete the clicked note
@@ -213,6 +248,7 @@ const handleNewNoteView = (e) => {
 };
 
 const handleRenderSaveBtn = () => {
+    console.log("chane");
     if (!noteTitle.value.trim() || !noteText.value.trim()) {
         hide(saveNoteBtn);
     } else {
@@ -275,9 +311,7 @@ const renderNoteList = async (notes) => {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = () => {
-    console.log("render new data");
-    getNotes().then(renderNoteList)};
+const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
 if (window.location.pathname === '/notes') {
     saveNoteBtn.addEventListener('click', handleNoteSave);
