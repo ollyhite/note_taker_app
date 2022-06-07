@@ -9,7 +9,6 @@ const greenBtn = document.querySelector('.green');
 const whiteBtn = document.querySelector('.white');
 const inputEl = document.querySelector(".form-control")
 const textareaEl = document.querySelector("textarea");
-
 const borderCancel =()=>{
     const circleEl = document.querySelectorAll('.circle');
     for (var i = 0; i < circleEl.length; i++) {
@@ -143,7 +142,7 @@ const deleteNote = (id) =>
     });
 
 const renderActiveNote = () => {
-    hide(saveNoteBtn);
+    // hide(saveNoteBtn);
 
     if (activeNote.id) {
         noteTitle.setAttribute('readonly', true);
@@ -164,12 +163,14 @@ const handleNoteSave = () => {
     const newNote = {
         title: noteTitle.value,
         text: noteText.value,
-        id: Math.random().toString(16).slice(2)
+        id: Math.random().toString(16).slice(2),
+        color: note.style.backgroundColor
         // id: nanoid(),
         // date:CurrentDate
     };
     console.log("newNote",newNote);
     saveNote(newNote).then(() => {
+        console.log("after save redender");
         getAndRenderNotes();
         renderActiveNote();
     });
@@ -196,12 +197,17 @@ const handleNoteDelete = (e) => {
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
     e.preventDefault();
+    console.log("view note");
+    saveNoteBtn.innerHTML = "Save";
     activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
     renderActiveNote();
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
+    e.preventDefault();
+    console.log("add new note");
+    saveNoteBtn.innerHTML = "Add";
     activeNote = {};
     renderActiveNote();
 };
@@ -259,6 +265,7 @@ const renderNoteList = async (notes) => {
     jsonNotes.forEach((note) => {
         const li = createLi(note.title);
         li.dataset.note = JSON.stringify(note);
+        li.style.backgroundColor = note.color;
         noteListItems.push(li);
     });
 
@@ -268,7 +275,9 @@ const renderNoteList = async (notes) => {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
+const getAndRenderNotes = () => {
+    console.log("render new data");
+    getNotes().then(renderNoteList)};
 
 if (window.location.pathname === '/notes') {
     saveNoteBtn.addEventListener('click', handleNoteSave);
