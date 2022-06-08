@@ -22,7 +22,7 @@ const writeToFile = (destination, content, res) =>
  *  @returns {void} Nothing
  */
 
-
+//add new data to database
 const readAndAppend = (content, file, res) => {
     fs.readFile(file, 'utf8', (err, data) => {
         if (err) {
@@ -35,6 +35,7 @@ const readAndAppend = (content, file, res) => {
     });
 };
 
+//update data to database
 const readAndUpdate = (id,content, file, res) => {
     console.log("content",content);
     console.log("file",file);
@@ -53,7 +54,7 @@ const readAndUpdate = (id,content, file, res) => {
         }
     });
 };
-
+//delete data to database
 const readAndDelete = (id,content, file, res) => {
     console.log("content",content);
     console.log("file",file);

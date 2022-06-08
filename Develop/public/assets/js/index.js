@@ -17,7 +17,7 @@ const textareaEl = document.querySelector("textarea");
 //default note bg is white;
 note.style.backgroundColor = "white";
 
-
+//colorBtn select reset the border func
 const borderCancel =()=>{
     const circleEl = document.querySelectorAll('.circle');
     for (var i = 0; i < circleEl.length; i++) {
@@ -25,6 +25,7 @@ const borderCancel =()=>{
         }        
     }
 
+//colorBtn select set the note bg and border func
 const changeGray =()=>{
     note.style.backgroundColor = "gray";
     inputEl.style.backgroundColor = "gray";
@@ -67,6 +68,12 @@ const changeWhite =()=>{
     textareaEl.style.backgroundColor = "white";
     btnBorderAdd(whiteBtn);
 }
+
+const btnBorderAdd = (btn) =>{
+    borderCancel();
+    btn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+}
+
 grayBtn.addEventListener('click', changeGray);
 pinkBtn.addEventListener('click', changePink);
 yellowBtn.addEventListener('click', changeYellow);
@@ -102,6 +109,7 @@ const hide = (elem) => {
 
 let activeNote = {};
 
+//front-end to connect crud api
 const getNotes = () =>
     fetch('/api/notes', {
         method: 'GET',
@@ -136,6 +144,7 @@ const deleteNote = (id) =>
         }
     });
 
+//show the note detail add new one or review 
 const renderActiveNote = () => {
     // hide(saveNoteBtn);
 
@@ -155,6 +164,7 @@ const renderActiveNote = () => {
     }
 };
 
+//save or create new note func
 const handleNoteSave = (e) => {
     e.preventDefault();
     // console.log(e.target.innerText);
@@ -216,6 +226,8 @@ const handleNoteView = (e) => {
     activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
     renderActiveNote();
 };
+
+//review the note and show the note's bg at right note section
 const checkNoteBgColor = (e) =>{
     e.preventDefault();
     switch(note.style.backgroundColor){
@@ -234,10 +246,7 @@ const checkNoteBgColor = (e) =>{
     }
 }
 
-const btnBorderAdd = (btn) =>{
-    borderCancel();
-    btn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
-}
+
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
     e.preventDefault();
