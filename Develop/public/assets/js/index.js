@@ -1,5 +1,7 @@
 // const { nanoid } = require("nanoid");
 // const moment = require('moment');
+// const { CurrentDate } = require('../../../helpers/moment');
+// import { CurrentDate } from '../../../helpers/moment';
 
 //note change bg js
 const note = document.querySelector('.right');
@@ -9,8 +11,13 @@ const yellowBtn = document.querySelector('.yellow');
 const greenBtn = document.querySelector('.green');
 const brownBtn = document.querySelector('.brown');
 const whiteBtn = document.querySelector('.white');
-const inputEl = document.querySelector(".form-control")
+const inputEl = document.querySelector(".form-control");
 const textareaEl = document.querySelector("textarea");
+
+//default note bg is white;
+note.style.backgroundColor = "white";
+
+
 const borderCancel =()=>{
     const circleEl = document.querySelectorAll('.circle');
     for (var i = 0; i < circleEl.length; i++) {
@@ -22,8 +29,7 @@ const changeGray =()=>{
     note.style.backgroundColor = "gray";
     inputEl.style.backgroundColor = "gray";
     textareaEl.style.backgroundColor = "gray";
-    borderCancel();
-    grayBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(grayBtn);
 }
 
 
@@ -31,45 +37,35 @@ const changeYellow =()=>{
     note.style.backgroundColor = "#FDF698";
     inputEl.style.backgroundColor = "#FDF698";
     textareaEl.style.backgroundColor = "#FDF698";
-    borderCancel();
-    yellowBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(yellowBtn);
 }
 
 const changePink =()=>{
     note.style.backgroundColor = "#E79CA3";
     inputEl.style.backgroundColor = "#E79CA3";
-    inputEl.style.color = "white";
     textareaEl.style.backgroundColor = "#E79CA3";
-    borderCancel();
-    pinkBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(pinkBtn);
 }
 
 const changeGreen =()=>{
     note.style.backgroundColor = "#84D4CB";
     inputEl.style.backgroundColor = "#84D4CB";
     textareaEl.style.backgroundColor = "#84D4CB";
-    borderCancel();
-    greenBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(greenBtn);
 }
 
 const changeBrown =()=>{
     note.style.backgroundColor = "#D7C1A5";
     inputEl.style.backgroundColor = "#D7C1A5";
     textareaEl.style.backgroundColor = "#D7C1A5";
-    borderCancel();
-    brownBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(brownBtn);
 }
 
 const changeWhite =()=>{
     note.style.backgroundColor = "white";
     inputEl.style.backgroundColor = "white";
-    inputEl.classList.remove('placeholder-white');
-    inputEl.style.color = "black";
     textareaEl.style.backgroundColor = "white";
-    textareaEl.classList.remove('placeholder-white');
-    textareaEl.style.color = "black";
-    borderCancel();
-    whiteBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+    btnBorderAdd(whiteBtn);
 }
 grayBtn.addEventListener('click', changeGray);
 pinkBtn.addEventListener('click', changePink);
@@ -161,38 +157,32 @@ const renderActiveNote = () => {
 
 const handleNoteSave = (e) => {
     e.preventDefault();
-    console.log(e.target.innerText);
+    // console.log(e.target.innerText);
     // const CurrentDate = moment().format('YYYY/MM/DD');
     if(e.target.innerText==="Save"){
-        console.log("handleNoteSave");
-        console.log(activeNote);
-        const updateData = {title: noteTitle.value,text: noteText.value,color: note.style.backgroundColor}
-        console.log(updateData);
+        const updateData = {title: noteTitle.value,text: noteText.value, color: note.style.backgroundColor, date:"2022/01/01"}
         if(updateData.title.trim().length===0){
             alert("Please enter the title!")
         }else{
             updateNote(activeNote.id,updateData).then(() => {
-            console.log("after update redender");
             getAndRenderNotes();
             renderActiveNote();
         });
         }
     }else{
-        console.log("handleNoteSave add new one");
         const newNote = {
             title: noteTitle.value,
             text: noteText.value,
             id: Math.random().toString(16).slice(2),
-            color: note.style.backgroundColor
+            color: note.style.backgroundColor,
             // id: nanoid(),
-            // date:CurrentDate
+            date:'2022/01/01'
         };
         console.log("newNote",newNote);
         if(newNote.title.trim().length===0){
             alert("Please enter the title!")
         }else{
             saveNote(newNote).then(() => {
-            console.log("after save redender");
             getAndRenderNotes();
             renderActiveNote();
         });
@@ -207,7 +197,7 @@ const handleNoteDelete = (e) => {
     e.stopPropagation();
 
     const note = e.target;
-    const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+    const noteId = JSON.parse(note.parentElement.parentElement.getAttribute('data-note')).id;
 
     if (activeNote.id === noteId) {
         activeNote = {};
@@ -222,12 +212,32 @@ const handleNoteDelete = (e) => {
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
     e.preventDefault();
-    console.log("view note");
     saveNoteBtn.innerHTML = "Save";
     activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
     renderActiveNote();
 };
+const checkNoteBgColor = (e) =>{
+    e.preventDefault();
+    switch(note.style.backgroundColor){
+        case "white": btnBorderAdd(whiteBtn);
+        break;
+        case "gray": btnBorderAdd(grayBtn);
+        break;
+        case "rgb(231, 156, 163)": btnBorderAdd(pinkBtn);
+        break;
+        case "rgb(253, 246, 152)": btnBorderAdd(yellowBtn);
+        break;
+        case "rgb(132, 212, 203)": btnBorderAdd(greenBtn);
+        break;
+        case "rgb(215, 193, 165)": btnBorderAdd(brownBtn);
+        break;
+    }
+}
 
+const btnBorderAdd = (btn) =>{
+    borderCancel();
+    btn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
+}
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
     e.preventDefault();
@@ -238,7 +248,6 @@ const handleNewNoteView = (e) => {
 };
 
 const handleRenderSaveBtn = () => {
-    console.log("chane");
     if (!noteTitle.value.trim() || !noteText.value.trim()) {
         hide(saveNoteBtn);
     } else {
@@ -256,16 +265,24 @@ const renderNoteList = async (notes) => {
     let noteListItems = [];
 
     // Returns HTML element with or without a delete button
-    const createLi = (text, delBtn = true) => {
+    const createLi = (text, date , delBtn = true) => {
     const liEl = document.createElement('li');
-    liEl.classList.add('list-group-item');
-
+    liEl.classList.add('list-group-item','d-flex','align-items-center','justify-content-between');
+    
+    const divEl = document.createElement('div');
+    divEl.classList.add('d-flex',"flex-column",'align-items-end','justify-content-between');
+    const spantitleEl = document.createElement('span');
     const spanEl = document.createElement('span');
-    spanEl.classList.add('list-item-title');
-    spanEl.innerText = text;
-    spanEl.addEventListener('click', handleNoteView);
+    spantitleEl.classList.add('list-item-title');
+    spantitleEl.innerText = text;
+    spanEl.innerHTML = date;
+    divEl.append(spanEl);
 
-    liEl.append(spanEl);
+    spantitleEl.addEventListener('click', handleNoteView);
+    spantitleEl.addEventListener('click', checkNoteBgColor);
+
+    liEl.append(spantitleEl);
+    liEl.append(divEl);
 
     if (delBtn) {
         const delBtnEl = document.createElement('i');
@@ -278,7 +295,7 @@ const renderNoteList = async (notes) => {
         );
         delBtnEl.addEventListener('click', handleNoteDelete);
 
-        liEl.append(delBtnEl);
+        divEl.append(delBtnEl);
     }
 
     return liEl;
@@ -289,7 +306,7 @@ const renderNoteList = async (notes) => {
     }
 
     jsonNotes.forEach((note) => {
-        const li = createLi(note.title);
+        const li = createLi(note.title, note.date);
         li.dataset.note = JSON.stringify(note);
         li.style.backgroundColor = note.color;
         noteListItems.push(li);

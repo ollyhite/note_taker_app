@@ -1,3 +1,14 @@
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus{
+    outline: 0px !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}
+
 body {
     background-color: #EAEAEA;
     margin: 0;
@@ -24,9 +35,6 @@ img{
     color: gray;
 }
 
-/* .save-note {
-    display: none;
-} */
 
 .left {
     width: 30%;
@@ -47,9 +55,6 @@ li {
     background-color: white;
     padding: 20px;
     margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .list-item-title {
@@ -67,18 +72,29 @@ li {
     border-bottom: 3px solid rgb(184, 181, 181);
 }
 
-.input-group .form-control {
+.form-control {
     border: none;
+    color: #495057;
+}
+.form-control::placeholder {
+    color: #495057;
 }
 
 .placeholder-white::placeholder {
     color: white
 }
-
+input{
+    color: #495057;
+}
 textarea {
     border: none;
     width: 95%;
     height: 55vh;
+    color: #495057;
+}
+
+textarea::placeholder {
+    color: #495057;
 }
 
 .color-select {
@@ -120,3 +136,17 @@ textarea {
 /* .btn.submit{
     background-color: #b6b5b5;
 } */
+
+@media screen and (max-width: 750px) {
+    section{
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .left{
+        width: 80%;
+    }
+    .right{
+        width: 80%;
+        margin-bottom: 50px;
+    }
+}
