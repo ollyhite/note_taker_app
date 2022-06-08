@@ -38,16 +38,15 @@ const readAndAppend = (content, file, res) => {
 //update data to database
 const readAndUpdate = (id,content, file, res) => {
     console.log("content",content);
-    console.log("file",file);
     fs.readFile(file, 'utf8', (err, data) => {
         if (err) {
         console.error(err);
         } else {
         const parsedData = JSON.parse(data);
-        console.log("parsedData",parsedData);
+        // console.log("parsedData",parsedData);
         const newdbData = parsedData.map(item =>
         item.id === id
-            ? { ...item, title: content.title , text:content.text, color:content.color }
+            ? { ...item, title: content.title , text:content.text, color:content.color, date: content.date}
             : item
         );
         writeToFile(file, newdbData,res);
@@ -63,7 +62,7 @@ const readAndDelete = (id,content, file, res) => {
         console.error(err);
         } else {
         const parsedData = JSON.parse(data);
-        console.log("parsedData",parsedData);
+        // console.log("parsedData",parsedData);
         const idToRemove = id;
         const removeItem = parsedData.filter((item) => item.id !== idToRemove);
         console.log("removeItem",removeItem);

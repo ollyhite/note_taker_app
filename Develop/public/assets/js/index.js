@@ -1,7 +1,3 @@
-// const { nanoid } = require("nanoid");
-// const moment = require('moment');
-// const { CurrentDate } = require('../../../helpers/moment');
-// import { CurrentDate } from '../../../helpers/moment';
 
 //note change bg js
 const note = document.querySelector('.right');
@@ -147,7 +143,6 @@ const deleteNote = (id) =>
 //show the note detail add new one or review 
 const renderActiveNote = () => {
     // hide(saveNoteBtn);
-
     if (activeNote.id) {
         // noteTitle.setAttribute('readonly', true);
         // noteText.setAttribute('readonly', true);
@@ -168,9 +163,8 @@ const renderActiveNote = () => {
 const handleNoteSave = (e) => {
     e.preventDefault();
     // console.log(e.target.innerText);
-    // const CurrentDate = moment().format('YYYY/MM/DD');
     if(e.target.innerText==="Save"){
-        const updateData = {title: noteTitle.value,text: noteText.value, color: note.style.backgroundColor, date:"2022/01/01"}
+        const updateData = {title: noteTitle.value,text: noteText.value, color: note.style.backgroundColor}
         if(updateData.title.trim().length===0){
             alert("Please enter the title!")
         }else{
@@ -183,10 +177,7 @@ const handleNoteSave = (e) => {
         const newNote = {
             title: noteTitle.value,
             text: noteText.value,
-            id: Math.random().toString(16).slice(2),
             color: note.style.backgroundColor,
-            // id: nanoid(),
-            date:'2022/01/01'
         };
         console.log("newNote",newNote);
         if(newNote.title.trim().length===0){
