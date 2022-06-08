@@ -21,10 +21,7 @@ const borderCancel =()=>{
 const changeGray =()=>{
     note.style.backgroundColor = "gray";
     inputEl.style.backgroundColor = "gray";
-    inputEl.classList.add('placeholder-white');
     textareaEl.style.backgroundColor = "gray";
-    textareaEl.classList.add('placeholder-white');
-    textareaEl.style.color = "white";
     borderCancel();
     grayBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
@@ -33,11 +30,7 @@ const changeGray =()=>{
 const changeYellow =()=>{
     note.style.backgroundColor = "#FDF698";
     inputEl.style.backgroundColor = "#FDF698";
-    inputEl.classList.remove('placeholder-white');
-    inputEl.style.color = "black";
     textareaEl.style.backgroundColor = "#FDF698";
-    textareaEl.classList.remove('placeholder-white');
-    textareaEl.style.color = "black";
     borderCancel();
     yellowBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
@@ -45,11 +38,8 @@ const changeYellow =()=>{
 const changePink =()=>{
     note.style.backgroundColor = "#E79CA3";
     inputEl.style.backgroundColor = "#E79CA3";
-    inputEl.classList.add('placeholder-white');
     inputEl.style.color = "white";
     textareaEl.style.backgroundColor = "#E79CA3";
-    textareaEl.classList.add('placeholder-white');
-    textareaEl.style.color = "white";
     borderCancel();
     pinkBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
@@ -57,11 +47,7 @@ const changePink =()=>{
 const changeGreen =()=>{
     note.style.backgroundColor = "#84D4CB";
     inputEl.style.backgroundColor = "#84D4CB";
-    inputEl.classList.add('placeholder-white');
-    inputEl.style.color = "white";
     textareaEl.style.backgroundColor = "#84D4CB";
-    textareaEl.classList.add('placeholder-white');
-    textareaEl.style.color = "white";
     borderCancel();
     greenBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
@@ -69,11 +55,7 @@ const changeGreen =()=>{
 const changeBrown =()=>{
     note.style.backgroundColor = "#D7C1A5";
     inputEl.style.backgroundColor = "#D7C1A5";
-    inputEl.classList.add('placeholder-white');
-    inputEl.style.color = "white";
     textareaEl.style.backgroundColor = "#D7C1A5";
-    textareaEl.classList.add('placeholder-white');
-    textareaEl.style.color = "white";
     borderCancel();
     brownBtn.style.boxShadow = "0 0 0 0.2rem rgb(0 123 255 / 25%";
 }
@@ -186,11 +168,15 @@ const handleNoteSave = (e) => {
         console.log(activeNote);
         const updateData = {title: noteTitle.value,text: noteText.value,color: note.style.backgroundColor}
         console.log(updateData);
-        updateNote(activeNote.id,updateData).then(() => {
+        if(updateData.title.trim().length===0){
+            alert("Please enter the title!")
+        }else{
+            updateNote(activeNote.id,updateData).then(() => {
             console.log("after update redender");
             getAndRenderNotes();
             renderActiveNote();
         });
+        }
     }else{
         console.log("handleNoteSave add new one");
         const newNote = {
@@ -202,11 +188,15 @@ const handleNoteSave = (e) => {
             // date:CurrentDate
         };
         console.log("newNote",newNote);
-        saveNote(newNote).then(() => {
+        if(newNote.title.trim().length===0){
+            alert("Please enter the title!")
+        }else{
+            saveNote(newNote).then(() => {
             console.log("after save redender");
             getAndRenderNotes();
             renderActiveNote();
         });
+        }
     }
     
 };
@@ -316,8 +306,8 @@ const getAndRenderNotes = () => getNotes().then(renderNoteList);
 if (window.location.pathname === '/notes') {
     saveNoteBtn.addEventListener('click', handleNoteSave);
     newNoteBtn.addEventListener('click', handleNewNoteView);
-    noteTitle.addEventListener('keyup', handleRenderSaveBtn);
-    noteText.addEventListener('keyup', handleRenderSaveBtn);
+    // noteTitle.addEventListener('keyup', handleRenderSaveBtn);
+    // noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
 
 getAndRenderNotes();

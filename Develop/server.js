@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { clog } = require('./middleware/clog');
+const { readAndAppend, readAndUpdate,readAndDelete } = require('./helpers/fsUtils');
+
 // const api = require('./routes/index.js');
 const app = express();
 
@@ -56,60 +58,6 @@ app.delete('/api/notes/:id', (req, res) => {
     console.log("req.params.id",req.params.id);
     readAndDelete(req.params.id,req.body,'./db/db.json',res)
 });
-
-const readAndAppend = (content, file, res) => {
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (err) {
-        console.error(err);
-        } else {
-        const parsedData = JSON.parse(data);
-        parsedData.push(content);
-        writeToFile(file, parsedData,res);
-        }
-    });
-};
-
-const readAndUpdate = (id,content, file, res) => {
-    console.log("content",content);
-    console.log("file",file);
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (err) {
-        console.error(err);
-        } else {
-        const parsedData = JSON.parse(data);
-        console.log("parsedData",parsedData);
-        const newdbData = parsedData.map(item =>
-        item.id === id
-            ? { ...item, title: content.title , text:content.text, color:content.color }
-            : item
-        );
-        writeToFile(file, newdbData,res);
-        }
-    });
-};
-
-const readAndDelete = (id,content, file, res) => {
-    console.log("content",content);
-    console.log("file",file);
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (err) {
-        console.error(err);
-        } else {
-        const parsedData = JSON.parse(data);
-        console.log("parsedData",parsedData);
-        const idToRemove = id;
-        const removeItem = parsedData.filter((item) => item.id !== idToRemove);
-        console.log("removeItem",removeItem);
-        writeToFile(file, removeItem,res);
-        }
-    });
-};
-// add res becuase readAndAppend() will faster 
-const writeToFile = (destination, content, res) =>
-    fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>{
-        return err ? console.error(err) : res.send("OK");
-        }
-    );
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}/notes 🚀`)
