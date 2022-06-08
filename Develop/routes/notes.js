@@ -1,55 +1,38 @@
 const notes = require("express").Router();
 const fs = require('fs');
+const { readAndAppend, readAndUpdate,readAndDelete } = require('../helpers/fsUtils');
 
-app.get('/api/notes', (req, res) => {
+notes.get('/', (req, res) => {
     console.info(`${req.method} request received for notes`)
-    res.json(dbData)
+    fs.readFile("./db/db.json", 'utf8', (err, data) => {
+        if (err) {
+        console.error(err);
+        } else {
+        console.log(JSON.parse(data));
+        res.status(200).json(JSON.parse(data))
+        }
+    });
 });
 
-app.post('/api/notes', (req, res) => {
+notes.post('/', (req, res) => {
     console.info("add new data in server",req.body);
-    const newdata = [...dbData, req.body];
-    fs.writeFile(`./db/db.json`, JSON.stringify(newdata), (err) =>
-        err
-            ? console.error(err)
-            : console.log(
-                `new data has been added`
-            )
-    );
+        readAndAppend(req.body,'./db/db.json',res)
 });
 
-app.put('/api/notes/:id', (req, res) => {
+notes.put('/:id', (req, res) => {
     console.info("updated data in server",req.body);
     console.log("req.params.id",req.params.id);
-    const newdbData = dbData.map(item =>
-        item.id === req.params.id
-            ? { ...item, title: req.body.title , text:req.body.text, color:req.body.color }
-            : item
-        );
-    console.log(newdbData);
-    fs.writeFile(`./db/db.json`, JSON.stringify(newdbData), (err) =>
-        err
-            ? console.error(err)
-            : console.log(
-                `data has been updated`
-            )
-    );
+    readAndUpdate(req.params.id,req.body,'./db/db.json',res)
 });
 
-app.delete('/api/notes/:id', (req, res) => {
+notes.delete('/:id', (req, res) => {
     console.log("delete data in server");
     console.log("req.params.id",req.params.id);
-    const idToRemove = req.params.id;
-    const removeItem = dbData.filter((item) => item.id !== idToRemove);
-    console.log("removeItem",removeItem);
-    fs.writeFile(`./db/db.json`, JSON.stringify(removeItem), (err) =>
-        err
-            ? console.error(err)
-            : console.log(
-                `data has been detele`
-            )
-    );
+    readAndDelete(req.params.id,req.body,'./db/db.json',res)
 });
+
+
+
 console.log("router notes.js here");
 
 module.exports = notes;
