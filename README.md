@@ -2,6 +2,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Live link
+
+https://lit-river-01645.herokuapp.com/notes
+
 ## Description
 
 Always have many notes need to take for the class, work...etc, sometime just want to quickly paste and save it. So that I want to create a web/APP can save quickly, update and delete. In this project is more harder use routers connect api, also data rewrite or delete. Learned a lot of how to organize api better. Easy to read in Front-end and Back-end.
@@ -30,7 +34,8 @@ Always have many notes need to take for the class, work...etc, sometime just wan
 
 ## Usage
 
-![alt text](./dist/images)
+![alt text](./public/assets/images/note_taker_screenshot.png)
+![alt text](./public/assets/images/note_taker_screenshot2.png)
 
 ## Built With
 
