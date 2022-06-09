@@ -53,6 +53,10 @@ Always have many notes need to take for the class, work...etc, sometime just wan
 - [Pei-Yun Hite's Github Link](https://github.com/ollyhite)
 - Send Qquestions or suggestions for changes to the readme_generator_tool project maintainer, [Pei-Yun Hite](mailto:ollyhite8520@gmail.com?subject=[GitHub]%20note_taker_app%20) , for consideration.
 
+## Credits
+
+https://github.com/coding-boot-camp/miniature-eureka
+
 ## License
 
 MIT License
