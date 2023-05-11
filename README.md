@@ -4,7 +4,7 @@
 
 ## Live link
 
-https://lit-river-01645.herokuapp.com/notes
+https://peiyunhite-note-taker.herokuapp.com/
 
 ## Description
 
